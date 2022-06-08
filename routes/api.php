@@ -25,7 +25,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'category', 'namespace' => 'API'], function(){
     Route::get('list', 'ApiController@categoryList');
     Route::post('create', 'ApiController@createCategory');
-    Route::post('details', 'ApiController@details');
+    Route::get('details/{id}', 'ApiController@details');
+    Route::get('delete/{id}', 'ApiController@deleteCategory');
+    Route::post('update', 'ApiController@updateCategory');
 });
+
 
 

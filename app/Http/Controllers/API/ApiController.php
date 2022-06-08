@@ -5,7 +5,12 @@ namespace App\Http\Controllers\API;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Response;
+use LDAP\Result;
+use PhpParser\Node\Stmt\Catch_;
+
+use function PHPUnit\Framework\isEmpty;
 
 class ApiController extends Controller
 {
@@ -40,8 +45,64 @@ class ApiController extends Controller
         return Response::json($response);
     }
 
-    public function details(Request $request)
+    public function details($id)
     {
+        // $id = $request->id;
+        $data = Category::where('category_id', $id)->first();
+        if(!empty($data)){
+            return Response::json([
+                'status' => 200,
+                'message' => 'success',
+                'data' => $data
+            ]);
+        }
+        else{
+            return Response::json([
+                'status' => 200,
+                'message' => 'fail',
+                'data' => $data
+            ]);
+        }
+    }
 
+    public function deleteCategory($id)
+    {
+        $data = Category::where('category_id', $id)->first();
+        if(empty($data)){
+            return Response::json([
+                'result' => 200,
+                'message' => 'There is no data'
+            ]);
+        }
+         Category::where('category_id', $id)->delete($data);
+         return Response::json([
+             'result' => 200,
+             'message' => 'success'
+         ]);
+    }
+
+    public function updateCategory(Request $request)
+    {
+        $category = [
+            'category_id' => $request->id,
+            'category_name' => $request->name,
+            'updated_at' => Carbon::now(),
+        ];
+
+        $check = Category::where('category_id', $request->id)->first();
+
+        if(!empty($check)){
+            Category::where('category_id', $request->id)->update($category);
+            return Response::json([
+                'result' => 200,
+                'message' => 'success'
+            ]);
+        }
+        else{
+            return Response::json([
+                'result' => 200,
+                'message' => 'There is no data to update.'
+            ]);
+        }
     }
 }
