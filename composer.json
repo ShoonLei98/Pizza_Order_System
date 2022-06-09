@@ -10,7 +10,7 @@
         "laravel/framework": "^9.11",
         "laravel/jetstream": "^2.8",
         "laravel/passport": "^10.4",
-        "laravel/sanctum": "^2.14.1",
+        "laravel/sanctum": "^2.15",
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.5",
         "usmanhalalit/laracsv": "2.1"
