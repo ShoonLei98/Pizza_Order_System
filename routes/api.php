@@ -18,11 +18,20 @@ use Illuminate\Support\Facades\Response;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::group(['middleware' => 'auth:sanctum'],function(){
+    Route::get('user', function(Request $request){
+        return $request->user();
+    });
 });
 
-Route::group(['prefix' => 'category', 'namespace' => 'API'], function(){
+Route::post('register', 'AuthController@register');
+Route::post('login', 'AuthController@login');
+
+Route::group(['prefix' => 'category', 'namespace' => 'API', 'middleware' => 'auth:sanctum'], function(){
     Route::get('list', 'ApiController@categoryList');
     Route::post('create', 'ApiController@createCategory');
     Route::get('details/{id}', 'ApiController@details');
@@ -30,5 +39,7 @@ Route::group(['prefix' => 'category', 'namespace' => 'API'], function(){
     Route::post('update', 'ApiController@updateCategory');
 });
 
-
+Route::group(['middleware' => 'auth:sanctum'], function(){
+    Route::get('logout', 'AuthController@logout');
+});
 
